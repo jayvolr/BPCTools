@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>BPC Tools</title>
+  </head>
+  <body>
+    {{#if info}}
+      <div id="infoRibbon" class="ribbon">{{info}}</div>
+    {{/if}}
+    {{#if error}}
+      <div id="errorRibbon" class="ribbon">{{error}}</div>
+    {{/if}}
+    <ul>
+      <li><a href="/write">Write blog post</a></li>
+      <li><a href="/db">View database</a></li>
+    </ul>
+  </body>
+  <link rel="stylesheet" href="master.css">
+  <script src='master.js'></script>
+</html>

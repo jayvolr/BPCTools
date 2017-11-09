@@ -1,0 +1,53 @@
+body {
+  font-family: sans-serif;
+  margin: 0;
+}
+
+li a {
+  font-size: 18px;
+}
+
+.ribbon {
+  max-height: 70px;
+  width: 100vw;
+  padding: 10px 0;
+  font-size: 18px;
+  color: white;
+  text-align: center;
+  position: fixed;
+  overflow: hidden;
+  -webkit-transition: top 500ms ease-in-out;
+  -o-transition: top 500ms ease-in-out;
+  transition: top 500ms ease-in-out;
+  top: 0;
+}
+
+#infoRibbon {
+  background-color: #40c2c5;
+}
+
+#errorRibbon {
+  background-color: #e24141;
+}
+
+#editor {
+  height: 100%;
+  width: 70%;
+  top: 72px;
+  position: absolute;
+  border: 0;
+  box-shadow: #00000038 0 0 15px 4px;
+  margin-left: 15%;
+}
+
+.ql-editor {
+  padding: 90px;
+  font-size: 16px;
+}
+
+.ql-toolbar {
+  text-align: center;
+  position: relative;
+  width: 100vw;
+  top: 0;
+}
