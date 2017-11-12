@@ -13,10 +13,10 @@ const db = app.get('env') === 'production' ? require('monk')('localhost:27017/pr
 // File upload middleware
 const multer = require('multer')
 let upload;
-if (process.env.NODE_ENV === 'production') {
-  upload = multer({dest: '../bigpicture.life/public/blogImages', limits: {fileSize: 2000000}});
-}else if(secrets.beta === true) {
+if (secrets.beta === true) {
   upload = multer({dest: '../beta.bigpicture.life/public/blogImages', limits: {fileSize: 2000000}});
+}else if(process.env.NODE_ENV === 'production') {
+  upload = multer({dest: '../bigpicture.life/public/blogImages', limits: {fileSize: 2000000}});
 }else {
   upload = multer({dest: '../BPCApp/public/blogImages', limits: {fileSize: 2000000}});
 }
