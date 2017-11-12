@@ -100,5 +100,5 @@ app
     res.send(req.session);
   })
   .listen(secrets.port, () => {
-    console.log(`Server listening on port ${port}... (${app.get('env')})`);
+    console.log(`Server listening on port ${secrets.port}... (${app.get('env')})`);
   });
