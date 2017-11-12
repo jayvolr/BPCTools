@@ -12,6 +12,23 @@
     <div id="editor">
     </div>
 
+    <div id="settingContainer">
+      <div id="docFormContainer">
+        <button id="exitSettings"><i class="icon-close"></i></button>
+        <form id="docForm" action="/write" method="post" enctype="multipart/form-data">
+          <input id="postInput" type="hidden" name="post"><br><br>
+          <input type="text" name="title" placeholder="Title" required><br><br>
+          <textarea name="featuredText" rows="8" cols="59" placeholder="Featured Text" required></textarea><br>
+           <span id="charCount">Characters: <span class="red">0/400</span></span><br><br>
+          <label for="image">Featured image:</label>
+          <input type="file" name="image" required><br><br>
+          <button class="button" id="writeSubmit">OK</button>
+        </form>
+      </div>
+    </div>
+
+    <button class="button" id="publishButton">Publish</button>
+
     <!-- Include the Quill library -->
     <script src="https://cdn.quilljs.com/1.3.4/quill.js"></script>
 
@@ -47,5 +64,7 @@
       overflow: hidden;
     }
   </style>
+  <link href="fontello.css" rel="stylesheet">
   <link rel="stylesheet" href="master.css">
+  <script src='write.js'></script>
 </html>

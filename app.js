@@ -1,6 +1,7 @@
 const bodyParser = require('body-parser');
 const express = require('express');
 const flash = require('connect-flash');
+const fs = require('fs');
 const hbs = require('hbs');
 const mongo = require('mongodb');
 const secrets = require('./secrets.js');
@@ -9,11 +10,20 @@ const session = require('express-session');
 const app = express();
 const db = app.get('env') === 'production' ? require('monk')('localhost:27017/prod') : require('monk')('localhost:27017/bpcDev');
 
+// File upload middleware
+const multer = require('multer')
+let upload;
+if (process.env.NODE_ENV === 'production') {
+  upload = multer({dest: '../bigpicture.life/public/blogImages', limits: {fileSize: 2000000}});
+}else {
+  upload = multer({dest: '../BPCApp/public/blogImages', limits: {fileSize: 2000000}});
+}
+
 app
   .set('view engine', 'hbs')
   .use(express.static(`${__dirname}/public`))
-  .use(bodyParser.urlencoded({ extended: false }))
-  .use(bodyParser.json())
+  .use(bodyParser.urlencoded({ limit: '50mb', extended: false }))
+  .use(bodyParser.json({ limit: '50mb' }))
   .use(session({
     secret: secrets.sessionSecret,
     resave: false,
@@ -32,8 +42,7 @@ app
     }
   })
   .post('/auth', (req, res) => {
-    if (secrets.adminPassword === req.body.password) {
-      req.flash('info', 'good job u did it');
+    if (secrets.adminPassword === req.body.pwd) {
       req.session.authenticated = true;
       res.redirect('/');
     }else {
@@ -58,6 +67,34 @@ app
   })
   .get('/write', (req, res) => {
     res.render('write');
+  })
+  .post('/write', upload.single('image'), (req, res) => {
+    const blogPosts = req.db.get('blogPosts');
+
+    const slug = req.body.title.toLowerCase().trim().replace(/\s/g, '-').replace(/[^\w-]/g, '');
+
+    fs.renameSync(req.file.path, req.file.destination + '/' + slug +'.jpg');
+
+    const newBlogPost = {
+      content: req.body.post.replace(/<p><br><\/p>/g, '').replace(/(rgb\(39, 41, 43\))/g, '#40c2c5'),
+      title: req.body.title,
+      featuredText: req.body.featuredText,
+      slug,
+      creationDate: Date.now()
+    }
+
+    // res.send(newBlogPost);
+
+    blogPosts.insert(newBlogPost)
+      .then((docs) => {
+        req.flash('info', 'Success!');
+        res.redirect('/');
+      })
+      .catch((err) => {
+        req.flash('error', 'Error saving to database.');
+        console.error(err);
+        res.redirect('/');
+      });
   })
   .get('/s', (req, res) => {
     res.send(req.session);
